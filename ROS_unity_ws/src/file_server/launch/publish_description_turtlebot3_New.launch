@@ -1,0 +1,46 @@
+<!--
+© Siemens AG, 2018-2019
+Author: Berkay Alp Cakal (berkay_alp.cakal.ct@siemens.com)
+
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+<http://www.apache.org/licenses/LICENSE-2.0>.
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+Line32:
+<param name="robot_description" command="$(arg urdf_file)" />  // removed this for migration from melodic to noetic with new parameter
+
+2nd try:
+
+<param name="robot_description" command="$(find xacro)/xacro '$(find turtlebot_description)/urdf'"/> // still error that xacro is not located 
+
+3rd:
+<param name="robot_description" command="$(find xacro)/xacro '$(find turtlebot_description)/urdf/turtlebot.xacro'"/>
+	// 3rd try https://github.com/richardw05/mybot_ws/issues/4 change the call for xacro
+
+-->
+
+<launch>
+
+	<include file="$(find file_server)/launch/ros_sharp_communication.launch">
+		<arg name="port" value="9090" />
+	</include>
+
+	<arg name="base" default="burger" />
+  	<arg name="stacks" default="tb3" />
+  	<arg name="3d_sensor" default="waffle_pi" />
+
+	<arg name="urdf_file" default="$(find xacro)/xacro.py '$(find turtlebot3_description)/robots/$(arg base)_$(arg stacks)_$(arg 3d_sensor).urdf.xacro'" />
+	
+	<param name="robot/name" value="Turtlebot3" />
+	
+	<param name="robot_description" command="$(find xacro)/xacro '$(find turtlebot3_description)/urdf/turtlebot3_burger.urdf.xacro'"/>
+	
+</launch>
+
